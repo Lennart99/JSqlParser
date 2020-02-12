@@ -12,6 +12,7 @@ package net.sf.jsqlparser.statement;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.sequence.AlterSequence;
 import net.sf.jsqlparser.statement.comment.Comment;
+import net.sf.jsqlparser.statement.create.database.CreateDatabase;
 import net.sf.jsqlparser.statement.create.index.CreateIndex;
 import net.sf.jsqlparser.statement.create.schema.CreateSchema;
 import net.sf.jsqlparser.statement.create.sequence.CreateSequence;
@@ -188,5 +189,10 @@ public class StatementVisitorAdapter implements StatementVisitor {
 
     @Override
     public void visit(CreateSynonym createSynonym) {
+    }
+
+    @Override
+    public void visit(CreateDatabase createDatabase) {
+
     }
 }

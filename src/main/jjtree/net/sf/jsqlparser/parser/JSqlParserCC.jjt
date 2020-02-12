@@ -41,6 +41,7 @@ import net.sf.jsqlparser.statement.alter.*;
 import net.sf.jsqlparser.statement.alter.sequence.*;
 import net.sf.jsqlparser.statement.comment.*;
 import net.sf.jsqlparser.statement.create.function.*;
+import net.sf.jsqlparser.statement.create.database.*;
 import net.sf.jsqlparser.statement.create.index.*;
 import net.sf.jsqlparser.statement.create.procedure.*;
 import net.sf.jsqlparser.statement.create.schema.*;
@@ -363,6 +364,8 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_XMLTEXT:"XMLTEXT">
 |   <K_YAML:"YAML">
 |   <K_ZONE:"ZONE">
+|   <K_DATABASE:"DATABASE">
+|   <K_DEFAULT_CHARACTER_SET:"DEFAULT" (<WHITESPACE>)* "CHARACTER" (<WHITESPACE>)* "SET">
 }
 
 TOKEN : /* Stuff */
@@ -496,6 +499,9 @@ Statement SingleStatement() :
         |
         LOOKAHEAD(CreateTable())
         stm = CreateTable()
+        |
+        LOOKAHEAD(CreateDatabase())
+        stm = CreateDatabase()
         |
         LOOKAHEAD(CreateView())
         stm = CreateView()
@@ -4328,6 +4334,35 @@ CreateTable CreateTable():
         return createTable;
     }
 }
+
+CreateDatabase CreateDatabase():
+{
+    CreateDatabase createDatabase = new CreateDatabase();
+
+    
+    String databaseName = null;
+
+    String characterSet = null;
+    String collate = null;
+}
+{
+    <K_CREATE>
+    <K_DATABASE>
+    
+    [ <K_IF> <K_NOT> <K_EXISTS> { createDatabase.setIfNotExists(true); }]
+
+	databaseName=RelObjectNameWithoutValue()
+	{
+        createDatabase.setDatabase(databaseName);
+    }
+
+    [ <K_DEFAULT_CHARACTER_SET> characterSet=RelObjectNameWithoutValue() { createDatabase.setCharacterSet(characterSet); }]
+
+    [ <K_COLLATE> collate=RelObjectNameWithoutValue() { createDatabase.setCollate(collate); }]
+
+    { return createDatabase; }
+}
+
 
 ColDataType ColDataType():
 {

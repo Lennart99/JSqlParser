@@ -63,6 +63,7 @@ import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.sequence.AlterSequence;
 import net.sf.jsqlparser.statement.comment.Comment;
+import net.sf.jsqlparser.statement.create.database.CreateDatabase;
 import net.sf.jsqlparser.statement.create.index.CreateIndex;
 import net.sf.jsqlparser.statement.create.schema.CreateSchema;
 import net.sf.jsqlparser.statement.create.sequence.CreateSequence;
@@ -928,5 +929,9 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
 
     private static <T> void throwUnsupported(T type){
         throw new UnsupportedOperationException(String.format("Finding tables from %s is not supported", type.getClass().getSimpleName()));
+    }
+
+    @Override
+    public void visit(CreateDatabase createDatabase) {
     }
 }

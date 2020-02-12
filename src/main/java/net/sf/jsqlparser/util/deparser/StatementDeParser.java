@@ -28,6 +28,7 @@ import net.sf.jsqlparser.statement.UseStatement;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.sequence.AlterSequence;
 import net.sf.jsqlparser.statement.comment.Comment;
+import net.sf.jsqlparser.statement.create.database.CreateDatabase;
 import net.sf.jsqlparser.statement.create.index.CreateIndex;
 import net.sf.jsqlparser.statement.create.schema.CreateSchema;
 import net.sf.jsqlparser.statement.create.sequence.CreateSequence;
@@ -319,5 +320,10 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
     @Override
     void deParse(Statement statement) {
         statement.accept(this);
+    }
+
+    @Override
+    public void visit(CreateDatabase createDatabase) {
+        buffer.append(createDatabase.toString());
     }
 }
